@@ -1,0 +1,5 @@
+smolagents
+python-dotenv
+sentence-transformers
+numpy
+openai

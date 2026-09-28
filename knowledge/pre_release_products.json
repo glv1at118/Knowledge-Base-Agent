@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Meridian Flow",
+    "category": "Productivity Software",
+    "target_customer_industry": "General Enterprise",
+    "price": "$39 per seat/month (Team), $89 per seat/month (Enterprise)",
+    "description": "An enterprise workflow automation platform that lets non-technical staff build multi-step approval and task-routing pipelines with a drag-and-drop canvas, replacing manual email-and-spreadsheet handoffs.",
+    "market_direction": "Position as a lightweight, business-user-friendly alternative to heavyweight BPM suites, entering through mid-market operations teams before an enterprise-wide push.",
+    "advertisement_proposal": "Case-study-driven LinkedIn campaign featuring operations leaders who cut manual approval time in half, paired with a free workflow-template marketplace."
+  },
+  {
+    "name": "Meridian Sync",
+    "category": "Productivity Software",
+    "target_customer_industry": "General Enterprise",
+    "price": "$12 per seat/month standalone; free when bundled with Meridian Flow Enterprise",
+    "description": "A real-time collaborative document editor with Git-style version branching, letting teams draft alternate versions of the same document and merge changes.",
+    "market_direction": "Cross-sell into the existing Meridian Flow customer base first, then evaluate a standalone go-to-market once merge-conflict UX is validated.",
+    "advertisement_proposal": "In-product upsell banners to current Meridian Flow customers, plus a short demo video of side-by-side document branching."
+  },
+  {
+    "name": "SentriGuard Cloud",
+    "category": "Enterprise Security",
+    "target_customer_industry": "Financial Services and Healthcare",
+    "price": "$0.08 per monitored cloud resource/month, volume discounts above 10,000 resources",
+    "description": "A cloud security posture management product that continuously scans multi-cloud infrastructure for misconfigurations and exposed storage, with one-click automated remediation.",
+    "market_direction": "Lead with compliance-driven buyers (SOC 2, HIPAA, PCI-DSS) where automated audit-evidence collection is the primary purchase trigger.",
+    "advertisement_proposal": "Sponsor compliance-focused webinars with audit and legal partners; publish a free cloud misconfiguration risk report as a lead magnet."
+  },
+  {
+    "name": "Northlight",
+    "category": "AI/ML Platform",
+    "target_customer_industry": "General Enterprise, especially Legal and Professional Services",
+    "price": "$500/month platform fee, plus $2 per fine-tuning compute-hour",
+    "description": "A no-code platform that lets enterprise data teams fine-tune small and mid-sized language models on their own private documents, without an ML engineering team.",
+    "market_direction": "Target teams already using off-the-shelf AI assistants who need domain-specific accuracy, positioning fine-tuning as the natural upgrade path.",
+    "advertisement_proposal": "Partner with pilot law firms to co-publish an accuracy benchmark comparing a fine-tuned model against a generic assistant on contract review."
+  },
+  {
+    "name": "Kindleframe",
+    "category": "Consumer Mobile App",
+    "target_customer_industry": "General Consumer",
+    "price": "Free tier; $7.99/month premium coaching tier",
+    "description": "An AI-powered personal finance app that analyzes linked bank and credit card transactions and gives conversational coaching on budgeting and savings goals.",
+    "market_direction": "Target financially-stressed younger professionals as the wedge audience, emphasizing an empathetic, non-judgmental coaching tone as the differentiator.",
+    "advertisement_proposal": "Short-form video campaign featuring real, anonymized user savings-goal success stories, avoiding traditional finance-app marketing tropes."
+  },
+  {
+    "name": "Beacon Analytics",
+    "category": "Data Analytics",
+    "target_customer_industry": "Retail",
+    "price": "$150/month per location, volume discount above 25 locations",
+    "description": "A real-time retail inventory analytics platform that ingests point-of-sale and warehouse data to predict stockouts and overstock days before they happen.",
+    "market_direction": "Focus on regional grocery and apparel chains with 10-100 locations, a segment underserved by enterprise-grade retail analytics vendors.",
+    "advertisement_proposal": "Trade-show presence at regional retail conferences with a live dashboard demo showing prevented stockouts from pilot customers."
+  },
+  {
+    "name": "Pulsewell",
+    "category": "Healthcare Technology",
+    "target_customer_industry": "Healthcare",
+    "price": "$85 one-time device cost; $45 per monitored patient/month",
+    "description": "A wearable paired with a clinician dashboard that monitors post-surgical patients recovering at home, flagging early warning signs before a hospital readmission is needed.",
+    "market_direction": "Enter through hospital readmission-reduction programs, where the cost is easily justified against the cost of a single prevented readmission.",
+    "advertisement_proposal": "Publish a pilot outcomes report on readmission-rate reduction to present directly to hospital procurement committees."
+  }
+]

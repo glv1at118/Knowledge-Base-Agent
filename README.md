@@ -11,4 +11,4 @@ The application is a Python terminal application with no graphical front end. Ad
 
 ### AI Tooling Used to Refine This Document
 
-Claude helped turn early drafts of this problem statement into clearer, more concise, and grammatically correct language.
+Claude helped turn early drafts of the writings into clearer, more concise, and grammatically correct language.
