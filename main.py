@@ -28,27 +28,14 @@ def main() -> None:
             break
 
         try:
-            answer = _ask_and_print(question)
+            answer = agent.ask(question)
         except Exception as error:
             print(f"\n[Error while answering: {error}]")
             continue
 
+        print(answer)
         logger.log_msg(question, answer)
 
-
-def _ask_and_print(question: str) -> str:
-    """Streams the agent's answer to the terminal as it arrives, and returns the full text."""
-    answer_pieces = []
-
-    for step in agent.ask(question):
-        text = getattr(step, "content", None)
-        if isinstance(text, str):
-            print(text, end="", flush=True)
-            answer_pieces.append(text)
-
-    print()  # Make it a newline once the streamed answer finishes
-
-    return "".join(answer_pieces)
 
 if __name__ == "__main__":
     main()
