@@ -1,5 +1,6 @@
 import os
 import dotenv
+from typing import Any, Iterator
 from smolagents import OpenAIServerModel, ToolCallingAgent
 from agent_tools import save_artifact, search_knowledge_base
 from constants import AGENT_MAX_STEPS, LLM_MODEL_ID
@@ -18,7 +19,7 @@ _agent = ToolCallingAgent(
     max_steps=AGENT_MAX_STEPS,
 )
 
-def ask(question: str) -> str:
+def ask(question: str) -> Iterator[Any]:
     return _agent.run(
         f"""
             You are a private knowledge base assistant. You must answer strictly from the

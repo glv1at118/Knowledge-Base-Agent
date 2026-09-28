@@ -104,7 +104,8 @@ def load_knowledge_base() -> List[Chunk]:
 class KnowledgeIndex:
     """
     In-Memory embedding index for the knowledge base contents.
-    The "build" function must be called to construct the embeddings, before doing any searches.
+    The "build" function MUST be called to construct the embeddings, before doing any searches.
+    The "search" function CANNOT be called if the "build" function is never called before.
     """
 
     def __init__(self, model_name: str = EMBEDDING_MODEL_NAME):
