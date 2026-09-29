@@ -64,8 +64,8 @@ def save_artifact(filename: str, content: str) -> str:
     output folder, for the user to consume later.
 
     Args:
-        filename: Desired file name only, e.g. "summary.md". Any folder
-            path included will be ignored. Files are always saved directly
+        filename: Desired file name only, e.g. "summary.md", "result.txt", or etc. 
+            Any folder path included will be ignored. Files are always saved directly
             in the output folder.
         content: The full text content to write into that file.
 

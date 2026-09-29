@@ -126,20 +126,22 @@ class KnowledgeIndex:
 
         query_embedding = self._embedding_model.encode([query], convert_to_numpy=True, show_progress_bar=False)[0]
 
-        # A list of score numbers, per chunk
-        scores = self._embeddings @ query_embedding
-        # The ranked chunk indices of the scores, from biggest to smallest.
+        scores = self._embeddings @ query_embedding # A list of score numbers, per chunk
+        # The sorted chunk indices, based on matching score from high to low
         ranked_indices = np.argsort(scores)[::-1]
-        # Construct a list of (chunk, score) tuple pairs, best match first, for every chunk.
+        # Create a list of (chunk, score) tuple pairs, best match first, for every chunk.
         ranked = [(self._chunks[index], float(scores[index])) for index in ranked_indices]
 
-
+        # Based on the high/low confidence parameter, return the first "max_results" of matches
+        # 1. Good matches
         confident_matches = [(chunk, score) for chunk, score in ranked if score >= HIGH_CONFIDENCE_THRESHOLD][:max_results]
         if confident_matches:
             return SearchResult(tier="confident", matches=confident_matches)
 
+        # 2. Mediocre matches
         ambiguous_matches = [(chunk, score) for chunk, score in ranked if score >= LOW_CONFIDENCE_THRESHOLD][:max_results]
         if ambiguous_matches:
             return SearchResult(tier="ambiguous", matches=ambiguous_matches)
 
+        # 3. Bad matches returns nothing
         return SearchResult(tier="no_match", matches=[])

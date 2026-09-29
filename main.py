@@ -1,23 +1,27 @@
 import agent
 import agent_tools
 import logger
-from constants import EXIT_COMMANDS
+from constants import EXIT_COMMANDS, BANNER, RED_COLOR, GREEN_COLOR, RESET_COLOR
+
+def print_colored(text: str, color: str) -> None:
+    print(f"{color}{text}{RESET_COLOR}")
 
 # The main entry of this knowledge RAG application as a terminal
 def main() -> None:
-    print("Application starts: Initializing knowledge context...")
+    print_colored(BANNER, GREEN_COLOR)
+    print_colored("Application starts: Initializing knowledge context...", GREEN_COLOR)
 
     try:
         agent_tools.initialize()
     except Exception as error:
-        print(f"FATAL: Could not start due to: {error}")
+        print_colored(f"FATAL: Could not start due to: {error}", RED_COLOR)
         return
 
     log_path = logger.init_logger_session()
 
-    print(f"Application is ready, logging this session to {log_path}")
-    print("Each question is answered independently, please mention the topic by name each time.")
-    print(f"Type {' or '.join(EXIT_COMMANDS)} to leave.\n")
+    print_colored(f"Application is ready, logging this session to {log_path}", GREEN_COLOR)
+    print_colored("Each question is answered independently, please mention the topic by name each time.", GREEN_COLOR)
+    print_colored(f"Type {' or '.join(EXIT_COMMANDS)} to leave.\n", GREEN_COLOR)
 
     # Keep this terminal interactive CLI active
     while True:
@@ -30,12 +34,11 @@ def main() -> None:
         try:
             answer = agent.ask(question)
         except Exception as error:
-            print(f"\n[Error while answering: {error}]")
+            print_colored(f"\n[Error while answering: {error}]", RED_COLOR)
             continue
 
-        print(answer)
+        print_colored(answer, GREEN_COLOR)
         logger.log_msg(question, answer)
-
 
 if __name__ == "__main__":
     main()
