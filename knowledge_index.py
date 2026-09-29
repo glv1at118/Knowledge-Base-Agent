@@ -52,7 +52,7 @@ def load_json_chunks(path: Path) -> List[Chunk]:
         lines = [f"{key}: {value}" for key, value in record.items()]
         chunks.append(Chunk(text="\n".join(lines), label=label, source_file=path.name))
 
-    log_msg(f"load_json_chunks() generated {chunks.count} JSON chunks in total.", True)
+    log_msg(f"load_json_chunks() generated {len(chunks)} JSON chunks in total.", True)
     return chunks
 
 def load_txt_chunks(path: Path) -> List[Chunk]:
@@ -74,7 +74,7 @@ def load_txt_chunks(path: Path) -> List[Chunk]:
         label = f"{path.stem} #{paragraph_index + 1}"
         chunks.append(Chunk(text=paragraph, label=label, source_file=path.name))
 
-    log_msg(f"load_txt_chunks() generated {chunks.count} TXT chunks in total.", True)    
+    log_msg(f"load_txt_chunks() generated {len(chunks)} TXT chunks in total.", True)
     return chunks
 
 
@@ -101,7 +101,7 @@ def load_knowledge_base() -> List[Chunk]:
     if not chunks:
         raise ValueError(f"No usable knowledge chunks found in {knowledge_folder}")
 
-    log_msg(f"load_knowledge_base() produced {chunks.count} chunks in total.", True)
+    log_msg(f"load_knowledge_base() produced {len(chunks)} chunks in total.", True)
     return chunks
 
 
@@ -116,7 +116,6 @@ class KnowledgeIndex:
         self._embedding_model = SentenceTransformer(model_name)
         self._chunks: List[Chunk] = []
         self._embeddings: Optional[np.ndarray] = None
-        log_msg("KnowledgeIndex instance is initiated, with _chunks & _embeddings being empty.", True)
 
     def build(self) -> None:
         self._chunks = load_knowledge_base()
@@ -142,13 +141,13 @@ class KnowledgeIndex:
         # 1. Good matches
         confident_matches = [(chunk, score) for chunk, score in ranked if score >= HIGH_CONFIDENCE_THRESHOLD][:max_results]
         if confident_matches:
-            log_msg(f"search() finishes with CONFIDENT matches. {[(chunk, score) for (chunk, score) in confident_matches]}", False)
+            log_msg(f"search() finishes with CONFIDENT matches. {[(chunk.label, score) for chunk, score in confident_matches]}", False)
             return SearchResult(tier="confident", matches=confident_matches)
 
         # 2. Mediocre matches
         ambiguous_matches = [(chunk, score) for chunk, score in ranked if score >= LOW_CONFIDENCE_THRESHOLD][:max_results]
         if ambiguous_matches:
-            log_msg(f"search() finishes with AMBIGUOUS matches. {[(chunk, score) for (chunk, score) in ambiguous_matches]}", False)
+            log_msg(f"search() finishes with AMBIGUOUS matches. {[(chunk.label, score) for chunk, score in ambiguous_matches]}", False)
             return SearchResult(tier="ambiguous", matches=ambiguous_matches)
 
         # 3. Bad matches returns nothing
