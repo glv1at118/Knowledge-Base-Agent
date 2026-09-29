@@ -16,8 +16,8 @@ LOGS_FOLDER_NAME = "logs"
 
 # LLM agent related params
 LLM_MODEL_ID = "gpt-4o-mini"
-AGENT_MAX_STEPS = 3
-Agent_Log_Level = LogLevel.DEBUG
+AGENT_MAX_STEPS = 4
+AGENT_LOG_LEVEL = LogLevel.DEBUG
 
 # Terminal interactivity
 EXIT_COMMANDS = ("exit", "quit")
