@@ -4,7 +4,7 @@ from typing import Literal
 EMBEDDING_MODEL_NAME = "multi-qa-mpnet-base-dot-v1"
 HIGH_CONFIDENCE_THRESHOLD = 0.55
 LOW_CONFIDENCE_THRESHOLD = 0.25
-MAX_RESULT_DEFAULT = 3
+MAX_RESULT_DEFAULT = 6
 Tier = Literal["confident", "ambiguous", "no_match"]
 
 # Folder paths

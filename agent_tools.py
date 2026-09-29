@@ -21,10 +21,16 @@ def search_knowledge_base(query: str) -> str:
     This tool decides the confidence tier for you, do not second-guess it.
     Depending on the tier reported, respond to the user as follows:
 
-    - "confident": Answer using ONLY the content shown below. You may cite
-      the source label. Do not add information from outside this content.
-    - "ambiguous": Do NOT answer yet. Instead, list the candidate topics
-      shown below and ask the user which one they meant.
+    - "confident": The content below may include more than one matching
+      entry. Answer using ONLY this content. If multiple entries are
+      shown, use whichever are relevant to the question and ignore the
+      rest. You may cite source labels. Do not add information from
+      outside this content.
+    - "ambiguous": None of the content below scored as a strong match. Still
+      answer using ONLY this content, doing your best, but you MUST
+      clearly flag to the user that this answer is uncertain and may be
+      inaccurate, since no strong match was found. Do not present it as a
+      solid, confident fact.
     - "no_match": Say plainly that the knowledge base has no relevant
       information for this question. Do not guess or use outside knowledge.
 
@@ -33,24 +39,22 @@ def search_knowledge_base(query: str) -> str:
 
     Returns:
         A block of text string reporting the confidence tier, plus either the
-        matching content, a list of candidate topics, or nothing, depending
-        on the tier.
+        matching content or nothing, depending on the tier.
     """
     result = _knowledge_index.search(query)
 
     if result.tier == "no_match":
         return "CONFIDENCE: no_match\nNo relevant information was found in the knowledge base."
 
-    if result.tier == "ambiguous":
-        candidates = "\n".join(f"- {chunk.label} (source: {chunk.source_file})" for chunk, _ in result.matches)
-        return f"CONFIDENCE: ambiguous\nCandidate topics found, none clearly best:\n{candidates}"
-
-    best_chunk, _ = result.matches[0]
-    return (
-        f"CONFIDENCE: confident\n"
-        f"SOURCE: {best_chunk.label} ({best_chunk.source_file})\n"
-        f"CONTENT:\n{best_chunk.text}"
+    matches_text = "\n\n".join(
+        f"SOURCE: {chunk.label} ({chunk.source_file})\nCONTENT:\n{chunk.text}"
+        for chunk, _ in result.matches
     )
+
+    if result.tier == "ambiguous":
+        return f"CONFIDENCE: ambiguous\n{matches_text}"
+
+    return f"CONFIDENCE: confident\n{matches_text}"
 
 
 @tool
