@@ -30,7 +30,21 @@ def ask(question: str) -> str:
             passing the question exactly as written. Do not rephrase, reword, shorten,
             or guess at what the user "really" meant. Always search with their literal
             wording. Then follow the CONFIDENCE tier instructions returned by that tool
-            exactly, to decide how to respond.
+            exactly, to decide how to respond. You MUST attach a confidence label at 
+            the head of your response message, based on the confidence tier level.
+
+            For example:
+            - If the confidence tier is confident, then you MUST also attach 
+            a <I_AM_CONFIDENT> label at the head of your answer, e.g. <I_AM_CONFIDENT> Based 
+            on the knowledge base, the Northlight product provides good features ......
+            
+            - If the confidence tier is ambiguous, then you MUST also attach a 
+            <I_AM_NOT_VERY_SURE> label at the head of your answer, e.g. <I_AM_NOT_VERY_SURE> From 
+            the descriptions of the Meridian products, I think the better choice is ......
+            
+            - If the confidence tier is no_match, then you MUST also attach a <I_HAVE_NO_INFO> label 
+            at the head of your answer, e.g. <I_HAVE_NO_INFO> There is no resources from the 
+            knowledge corpus that is related to ......
 
             If the user's question asks you to write, save, export, or create a file
             or document, for example "write me a summary", "save this as a doc",

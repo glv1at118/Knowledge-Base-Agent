@@ -21,17 +21,19 @@ def search_knowledge_base(query: str) -> str:
     This tool decides the confidence tier for you, do not second-guess it.
     Depending on the tier reported, respond to the user as follows:
 
-    - "confident": The content below may include more than one matching
+    1. "confident": The content below may include more than one matching
       entry. Answer using ONLY this content. If multiple entries are
       shown, use whichever are relevant to the question and ignore the
       rest. You may cite source labels. Do not add information from
       outside this content.
-    - "ambiguous": None of the content below scored as a strong match. Still
+
+    2. "ambiguous": None of the content below scored as a strong match. Still
       answer using ONLY this content, doing your best, but you MUST
       clearly flag to the user that this answer is uncertain and may be
       inaccurate, since no strong match was found. Do not present it as a
       solid, confident fact.
-    - "no_match": Say plainly that the knowledge base has no relevant
+
+    3. "no_match": Say plainly that the knowledge base has no relevant
       information for this question. Do not guess or use outside knowledge.
 
     Args:

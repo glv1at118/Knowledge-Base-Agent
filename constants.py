@@ -4,8 +4,8 @@ from smolagents import LogLevel
 
 # Embedding and retrieval related params
 EMBEDDING_MODEL_NAME = "multi-qa-mpnet-base-dot-v1"
-HIGH_CONFIDENCE_THRESHOLD = 0.55
-LOW_CONFIDENCE_THRESHOLD = 0.25
+HIGH_CONFIDENCE_THRESHOLD = 17
+LOW_CONFIDENCE_THRESHOLD = 10
 MAX_RESULT_DEFAULT = 6
 Tier = Literal["confident", "ambiguous", "no_match"]
 
