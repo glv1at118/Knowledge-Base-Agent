@@ -1,4 +1,6 @@
+from enum import Enum
 from typing import Literal
+from smolagents import LogLevel
 
 # Embedding and retrieval related params
 EMBEDDING_MODEL_NAME = "multi-qa-mpnet-base-dot-v1"
@@ -15,6 +17,7 @@ LOGS_FOLDER_NAME = "logs"
 # LLM agent related params
 LLM_MODEL_ID = "gpt-4o-mini"
 AGENT_MAX_STEPS = 3
+Agent_Log_Level = LogLevel.DEBUG
 
 # Terminal interactivity
 EXIT_COMMANDS = ("exit", "quit")

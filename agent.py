@@ -2,7 +2,7 @@ import os
 import dotenv
 from smolagents import OpenAIServerModel, ToolCallingAgent
 from agent_tools import save_artifact, search_knowledge_base
-from constants import AGENT_MAX_STEPS, LLM_MODEL_ID
+from constants import AGENT_MAX_STEPS, LLM_MODEL_ID, Agent_Log_Level
 
 dotenv.load_dotenv()
 
@@ -16,6 +16,7 @@ _agent = ToolCallingAgent(
     tools=[search_knowledge_base, save_artifact],
     model=_model,
     max_steps=AGENT_MAX_STEPS,
+    verbosity_level=Agent_Log_Level, # debug or info here when I run local testing, put to off when in demo
 )
 
 def ask(question: str) -> str:
