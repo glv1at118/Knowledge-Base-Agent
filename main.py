@@ -1,10 +1,7 @@
 import agent
 import agent_tools
-import logger
-from constants import EXIT_COMMANDS, BANNER, RED_COLOR, GREEN_COLOR, RESET_COLOR
-
-def print_colored(text: str, color: str) -> None:
-    print(f"{color}{text}{RESET_COLOR}")
+from logger import init_logger_session, print_colored, log_msg
+from constants import EXIT_COMMANDS, BANNER, RED_COLOR, GREEN_COLOR
 
 # The main entry of this knowledge RAG application as a terminal
 def main() -> None:
@@ -17,7 +14,7 @@ def main() -> None:
         print_colored(f"FATAL: Could not start due to: {error}", RED_COLOR)
         return
 
-    log_path = logger.init_logger_session()
+    log_path = init_logger_session()
 
     print_colored(f"Application is ready, logging this session to {log_path}", GREEN_COLOR)
     print_colored("Each question is answered independently, please mention the topic by name each time.", GREEN_COLOR)
@@ -38,7 +35,7 @@ def main() -> None:
             continue
 
         print_colored(answer, GREEN_COLOR)
-        logger.log_msg(question, answer)
+        log_msg(f"User_Asked: {question}; Agent_Answered: {answer}", print_terminal=False)
 
 if __name__ == "__main__":
     main()
