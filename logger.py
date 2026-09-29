@@ -31,8 +31,8 @@ def log_msg(info: str, print_terminal: bool = False) -> None:
     if _log_path is None:
         raise RuntimeError("Error: No available logger session exists! Please call init_logger_session() first!")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    entry = f"{timestamp} - {info}\n"
+    timestamp = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
+    entry = f"++++++ {timestamp} ++++++\n{info}\n\n\n"
 
     if print_terminal:
         print_colored(text=info, color=GREEN_COLOR)
