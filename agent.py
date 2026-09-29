@@ -35,16 +35,11 @@ def ask(question: str) -> str:
 
             For example:
             - If the confidence tier is confident, then you MUST also attach 
-            a <I_AM_CONFIDENT> label at the head of your answer, e.g. <I_AM_CONFIDENT> Based 
-            on the knowledge base, the Northlight product provides good features ......
-            
+            a <I_AM_CONFIDENT> label at the head of your answer.
             - If the confidence tier is ambiguous, then you MUST also attach a 
-            <I_AM_NOT_VERY_SURE> label at the head of your answer, e.g. <I_AM_NOT_VERY_SURE> From 
-            the descriptions of the Meridian products, I think the better choice is ......
-            
-            - If the confidence tier is no_match, then you MUST also attach a <I_HAVE_NO_INFO> label 
-            at the head of your answer, e.g. <I_HAVE_NO_INFO> There is no resources from the 
-            knowledge corpus that is related to ......
+            <I_AM_NOT_VERY_SURE> label at the head of your answer.
+            - If the confidence tier is no_match, then you MUST also attach a 
+            <I_HAVE_NO_INFO> label at the head of your answer.
 
             If the user's question asks you to write, save, export, or create a file
             or document, for example "write me a summary", "save this as a doc",
