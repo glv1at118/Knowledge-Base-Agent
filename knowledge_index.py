@@ -93,10 +93,10 @@ def load_knowledge_base() -> List[Chunk]:
             continue
         if path.suffix == ".json":
             chunks.extend(load_json_chunks(path))
-        elif path.suffix == ".txt":
+        elif path.suffix in (".txt", ".md"):
             chunks.extend(load_txt_chunks(path))
         else:
-            print(f"WARN: skipping {path.name}. Only TXT/JSON are currently supported!")
+            print(f"WARN: Skipping {path.name}! Only .TXT/.MD/.JSON are currently supported!")
 
     if not chunks:
         raise ValueError(f"No usable knowledge chunks found in {knowledge_folder}")
