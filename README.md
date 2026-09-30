@@ -12,6 +12,8 @@ A terminal assistant that answers questions strictly from your own documents, an
   - [Architecture](#architecture) · [Components](#components) · [Retrieval and Tiering](#retrieval-and-tiering) · [Prompt Design](#prompt-design)
 - [3. Testing Approach](#3-testing-approach)
   - [Sample Inputs](#sample-inputs) · [Verification](#verification) · [Revisions Driven by Testing](#revisions-driven-by-testing)
+- [4. Documentation](#4-documentation)
+  - [Summary of Approach](#summary-of-approach) · [Prompt Examples](#prompt-examples) · [How It Was Tested](#how-it-was-tested) · [Reflection](#reflection)
 - [How AI Was Used](#how-ai-was-used)
 
 ## Setup and Run
@@ -36,6 +38,13 @@ A terminal assistant that answers questions strictly from your own documents, an
    ```
    The first run downloads the embedding model (~440 MB) from Hugging Face and takes a few minutes; later runs load it from cache. Warnings about `HF_TOKEN` or symlinks are harmless.
 6. Ask questions at the `>>>` prompt. Type `exit` or `quit` to leave.
+7. *(Optional)* Control how much of the agent's reasoning appears in the terminal with `AGENT_LOG_LEVEL` in `constants.py`:
+   - `LogLevel.OFF` — hides the agent's steps; answers only
+   - `LogLevel.ERROR` — errors only
+   - `LogLevel.INFO` — each step and tool call (default)
+   - `LogLevel.DEBUG` — maximum detail
+
+   Session logs in `logs/` are unaffected.
 
 ### The .env File
 
@@ -58,7 +67,7 @@ UDACITY_OPENAI_API_KEY=voc-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxx
 | `output/` | Artifacts the agent saves (summaries, reports) |
 | `logs/` | One log file per session: index build, each search's tier and scores, each Q&A |
 | `clean_logs_and_output.bat` | Windows: empties `logs/` and `output/`. macOS / Linux equivalent: `rm -f logs/* output/*` |
-| `constants.py` | Tunables: thresholds, model IDs, `AGENT_LOG_LEVEL` (`LogLevel.OFF` hides the agent's step-by-step output) |
+| `constants.py` | Tunables: thresholds, model IDs, terminal verbosity (`AGENT_LOG_LEVEL`, see step 7 above) |
 | `.env` | **MUST-HAVE** API credentials (you create it) |
 
 Knowledge file formats:
@@ -195,6 +204,54 @@ All prefixes were correct. Each question used exactly one search call; #4 also c
 - Placeholder thresholds (0.55 / 0.25) assumed a 0–1 scale, which was a bug; real scores ran ~5–30, so every query — even gibberish — came back `confident` → **Revised**: recalibrated from measured scores (now 17.0 / 12.5). These 2 values are fine-tuned based on multiple rounds of testing.
 - `ambiguous` originally asked the user to clarify → **Revised**: now answers with an explicit uncertainty warning.
 - File saving triggered inconsistently → **Revised**: concrete trigger phrases added; agent step limit raised from 3 to 4.
+
+## 4. Documentation
+
+### Summary of Approach
+
+A retrieval-augmented agent built with smolagents. At startup, knowledge files are chunked and embedded locally. For each question, `gpt-4.1` calls one search tool; plain code scores the chunks, picks a confidence tier, and returns only the qualifying chunks. The LLM answers from those chunks alone, following the rules for that tier, and can save the result as a file.
+
+### Prompt Examples
+
+**1. Search with the user's exact words** (`search_knowledge_base` docstring)
+> IMPORTANT: pass the user's question exactly as they asked it. Do not rephrase, reword, shorten, or guess at what they "really" meant.
+
+Why: a rephrased query changes which chunks match. Verbatim search keeps retrieval deterministic and reproducible.
+
+**2. Answer weak matches, but flag them** (`search_knowledge_base` docstring)
+> "ambiguous": … Still answer using ONLY this content, doing your best, but you MUST clearly flag to the user that this answer is uncertain and may be inaccurate …
+
+Why: a weak match can still help, as long as the user knows not to rely on it.
+
+**3. Make the tier visible** (`agent.py`)
+> If the confidence tier is ambiguous, then you MUST also attach a `<I_AM_NOT_VERY_SURE>` label at the head of your answer.
+
+Why: users see how much to trust each answer, and testing can check the tier directly from the output.
+
+**4. Concrete triggers for saving files** (`agent.py`)
+> … for example "write me a summary", "save this as a doc", "create a file with...", "give me a report I can keep", and etc., you MUST call the save_artifact tool to actually create that file.
+
+Why: vaguer wording made file saving inconsistent; example phrases made it reliable.
+
+### How It Was Tested
+
+See [3. Testing Approach](#3-testing-approach): eight questions across all three tiers (in this ReadMe sampling), run live and checked against defined good output. Earlier test rounds during implementation (local tests performed around 40-50 times) drove the fixes under [Revisions Driven by Testing](#revisions-driven-by-testing).
+
+### Reflection
+
+**What worked well**
+- I kept every decision that must be predictable — tier choice, which chunks the LLM sees — in code. The one time I relied on a prompt instruction to filter irrelevant chunks, it failed.
+- Grounding held: the agent refused "What is the capital of France?" even though the model knows the answer.
+- Three tiers instead of yes/no: weak matches still get an answer, with a warning. Test #6 shows that warning doing its job.
+- Local embeddings make retrieval free; only answer generation uses the paid API.
+- Every prompt and code fix came from a real test failure, not a guess.
+
+**What I'd improve**
+- **Chat memory:** make the agent stateful, so follow-ups like "what's its price?" work.
+- **More sources:** support PDF, CSV, images, and web crawling.
+- **Aggregation tools:** add tool functions for counting, aggregation, and similar questions; single-chunk retrieval can't answer "how many products are there?".
+- **More validation:** every new file type needs its own testing round, and the thresholds and 6-match cap may need further tuning (see Finding #6).
+- **Deployment:** move from a terminal app to a backend service so it can scale.
 
 ## How AI Was Used
 
