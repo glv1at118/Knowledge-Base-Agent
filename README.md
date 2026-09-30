@@ -133,7 +133,7 @@ flowchart TD
     classDef ai fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
 ```
 
-**Blue areas are Where AI plays a part.** The local embedding model (`multi-qa-mpnet-base-dot-v1`) handles retrieval at no API cost. `gpt-4.1` only calls the tool and writes the answer. Which chunks it sees, and which tier applies, is decided by threshold code — not the LLM.
+**Blue areas are where AI plays a part.** The local embedding model (`multi-qa-mpnet-base-dot-v1`) handles retrieval at no API cost. `gpt-4.1` only calls the tool and writes the answer. Which chunks it sees, and which tier applies, is decided by threshold code — not the LLM.
 
 ### Components
 
@@ -200,7 +200,7 @@ All prefixes were correct. Each question used exactly one search call; #4 also c
 ### Revisions Driven by Testing
 
 - `confident` returned only the top chunk, so two-product comparisons missed the second product → **Revised**: refactored to return multiple matches rather than 1 best one.
-- An unrelated product then appeared in a "Meridian" answer, despite a prompt rule to ignore irrelevant entries → **Revised**: chunks now qualify by their own score, not rank. The program will no longer pick from the top N best scores in the rank, it will instead pick the top scored matches that also surpasses the criteria threshold. Filtering moved from prompt to code.
+- An unrelated product then appeared in a "Meridian" answer, despite a prompt rule to ignore irrelevant entries → **Revised**: chunks now qualify by their own score, not rank. The program will no longer pick from the top N best scores in the rank, it will instead pick the top scored matches that also surpass the criteria threshold. Filtering moved from prompt to code.
 - Placeholder thresholds (0.55 / 0.25) assumed a 0–1 scale, which was a bug; real scores ran ~5–30, so every query — even gibberish — came back `confident` → **Revised**: recalibrated from measured scores (now 17.0 / 12.5). These 2 values are fine-tuned based on multiple rounds of testing.
 - `ambiguous` originally asked the user to clarify → **Revised**: now answers with an explicit uncertainty warning.
 - File saving triggered inconsistently → **Revised**: concrete trigger phrases added; agent step limit raised from 3 to 4.
@@ -255,7 +255,8 @@ See [3. Testing Approach](#3-testing-approach): eight questions across all three
 
 ## How AI Was Used
 
-- **Code Implementation:** Claude assisted with Python coding and syntax under my detailed direction. I owned the original idea, the architecture of dataflow, and the design decisions in every step, and carefully audited every line of the codes.
-- **Debugging, tuning, testing:** I performed multiple rounds of live testing and found every issue listed under [Revisions Driven by Testing](#revisions-driven-by-testing); I proposed returning multiple matches and selecting them by score rather than rank; initiated the threshold recalibration; wrote the answer-prefix labels; Designed the logging system and their insertion points.
+- **Design:** I brainstormed options with Claude (e.g. local embeddings, a retrieval-tuned embedding model, deterministic confidence tiers, a stateless design); I made the final calls.
+- **Code Implementation:** Claude assisted with Python coding and syntax under my detailed direction. I owned the original idea, the architecture of dataflow, and the design decisions in every step, and carefully audited every line of the code.
+- **Debugging, tuning, testing:** I performed multiple rounds of live testing and found every issue listed under [Revisions Driven by Testing](#revisions-driven-by-testing); I proposed returning multiple matches and selecting them by score rather than rank; initiated the threshold recalibration; wrote the answer-prefix labels; designed the logging system and their insertion points.
 - **Knowledge corpus:** Claude generated the fictional Vantavo Technologies knowledge files to my specification (topics, structure, and deliberate test cases such as near-duplicate products).
 - **Writing, documentation, paperwork:** Claude helped edit this README for clarity, grammar, and efficiency.
